@@ -7,22 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 import players.EgoisticalBot;
-import players.RotatingBot;
+import players.PassiveBot;
 
 public class Game {
 	private static Player[] players = {
-		new EgoisticalBot(),
-		new RotatingBot()
+		new PassiveBot(),
+		new EgoisticalBot()
 	};
 	
 	// Game Parameters
 	private static int COINS;
-	private static final int GAMES = 10;
+	private static final int GAMES = 1;
 	private static final int ROUNDS = 50;
 	private static final int NB_ACTIONS = 3;
 	
 	private static final int POINTS_TAKE = -1;
 	private static final int POINTS_PUT = 1;
+	private static final int POINTS_REMOVE = 0;
 	private static final int POINTS_FLIP = 2;
 	private static final int POINTS_UNFLIP = -2;
 	private static final int POINTS_GET_FLIPPED = 2;
@@ -31,8 +32,8 @@ public class Game {
 	private static final int POINTS_END_UNFLIPPED = 1;
 	
 	// Console
-	private static final boolean DEBUG = false;
-	private static final boolean GAME_MESSAGES = false;
+	private static final boolean DEBUG = true;
+	private static final boolean GAME_MESSAGES = true;
 		
 	private final List<PlayerType> playerTypes = new ArrayList<PlayerType>();
 	private int round = 0;
@@ -107,10 +108,8 @@ public class Game {
 	
 		return printResults();
 	}
-	
 
-
-	private void initialize() {		
+	private void initialize() {
 		
 		for (int i = 0; i < players.length; i++) {
 			try {
@@ -126,9 +125,14 @@ public class Game {
 		}
 		
 		Collections.shuffle(playerTypes);
+		for (int i = 0; i < playerTypes.size(); i++) {
+			playerTypes.get(i).setOrder(i);
+		}
 	}	
 	
 	private boolean makeTurns() {
+		
+		Collections.sort(playerTypes);
 		
 		for (PlayerType playerType : playerTypes) {
 					
@@ -156,8 +160,9 @@ public class Game {
 						case 'T': executeRotate(playerType, 1); break;
 						case 'F': executeFlip(playerType); break;
 						case 'U': executeUnflip(playerType); break;
-						case 'M': executeMove(playerType, 0); break;
-						case 'O': executeMove(playerType, 1); break;
+						case 'X': executeRemove(playerType, 1); break;
+						case 'Y': executeRemove(playerType, 2); break;
+						case 'Z': executeRemove(playerType, 3); break;
 						case 'N': executeWait(playerType); break;
 						default : executeWait(playerType); break;
 					}
@@ -251,27 +256,18 @@ public class Game {
 			
 		}
 	}
-		
-	private void executeMove(PlayerType player, int direction) {
-		
-		int index = playerTypes.indexOf(player);
-		int position = 0;
-				
-		if (direction == 0) { // To previous
-			position = index - 1 < 0 ? playerTypes.size() - 1 : index - 1;
-			
-			if (GAME_MESSAGES) System.out.println(player.getOwner().getDisplayName() + " moved to previous position.");
-		
-		} else if (direction == 1) { // To next
-			position = index + 1 > playerTypes.size() - 1 ? 0 : index + 1;
-			
-			if (GAME_MESSAGES) System.out.println(player.getOwner().getDisplayName() + "  moved to next position.");
-		}
-		
-		playerTypes.remove(player);
-		playerTypes.add(position, player);
-	}
+
 	
+	private void executeRemove(PlayerType player, int nb) {
+		
+		int maxCoins = player.getUnflippedCoins() >= nb ? nb : player.getUnflippedCoins() ;
+		
+		player.setUnflippedCoins(player.getUnflippedCoins() - maxCoins);
+		player.setPoints(player.getPoints() + (maxCoins * POINTS_REMOVE));
+		
+		if (GAME_MESSAGES) System.out.println(player.getOwner().getDisplayName() + " removed " + maxCoins + " coins from the pot. (" + Game.COINS + " coins left)." + displayStats(player));		
+	}
+		
 	private void executeFlip(PlayerType player) {
 		
 		int maxCoins = player.getUnflippedCoins() >= 1 ? 1 : player.getUnflippedCoins() ;

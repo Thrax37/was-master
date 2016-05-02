@@ -1,9 +1,10 @@
 package controller;
 import java.util.Scanner;
 
-public class PlayerType {
+public class PlayerType implements Comparable<PlayerType> {
 	private final int id;
 	private Player owner;
+	private int order;
 	private int points;
 	private int flippedCoins;
 	private int unflippedCoins;
@@ -15,6 +16,25 @@ public class PlayerType {
 		this.points = points;
 		this.flippedCoins = flippedCoins;
 		this.unflippedCoins = unflippedCoins;
+	}
+
+	@Override
+	public int compareTo(PlayerType other) {
+		if (order > other.order) {
+			return 1;
+		} else if (order < other.order){
+			return -1;
+		}
+
+		return 0;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	public Player getOwner() {
