@@ -6,18 +6,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import players.Balance;
+import players.BirdInTheHand;
+import players.Crook;
 import players.EgoisticalBot;
+import players.Flipper;
+import players.GreedyRotation;
+import players.Jim;
+import players.Oracle;
 import players.PassiveBot;
+import players.Saboteur;
+import players.SimpleBot;
+import players.TheJanitor;
 
 public class Game {
 	private static Player[] players = {
+		new Balance(),
+		new BirdInTheHand(),
+		new Crook(),
+		new EgoisticalBot(),
+		new Flipper(),
+		new GreedyRotation(),
+		new Jim(),
+		new Oracle(),
 		new PassiveBot(),
-		new EgoisticalBot()
+		new Saboteur(),
+		new SimpleBot(),
+		new TheJanitor()
 	};
 	
 	// Game Parameters
 	private static int COINS;
-	private static final int GAMES = 1;
+	private static final int GAMES = 20;
 	private static final int ROUNDS = 50;
 	private static final int NB_ACTIONS = 3;
 	
@@ -29,11 +49,11 @@ public class Game {
 	private static final int POINTS_GET_FLIPPED = 2;
 	private static final int POINTS_GET_UNFLIPPED = -1;
 	private static final int POINTS_END_FLIPPED = 2;
-	private static final int POINTS_END_UNFLIPPED = 1;
+	private static final int POINTS_END_UNFLIPPED = -1;
 	
 	// Console
-	private static final boolean DEBUG = true;
-	private static final boolean GAME_MESSAGES = true;
+	private static final boolean DEBUG = false;
+	private static final boolean GAME_MESSAGES = false;
 		
 	private final List<PlayerType> playerTypes = new ArrayList<PlayerType>();
 	private int round = 0;
