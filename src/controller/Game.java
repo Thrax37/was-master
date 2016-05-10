@@ -16,8 +16,10 @@ import players.Jim;
 import players.Oracle;
 import players.PassiveBot;
 import players.Saboteur;
+import players.SecondBest;
 import players.SimpleBot;
 import players.TheJanitor;
+import players.TraderBot;
 
 public class Game {
 	private static Player[] players = {
@@ -31,12 +33,15 @@ public class Game {
 		new Oracle(),
 		new PassiveBot(),
 		new Saboteur(),
+		new SecondBest(),
 		new SimpleBot(),
-		new TheJanitor()
+		new TheJanitor(),
+		new TraderBot()
 	};
 	
 	// Game Parameters
 	private static int COINS;
+	private static int STARTING_COINS;
 	private static final int GAMES = 20;
 	private static final int ROUNDS = 50;
 	private static final int NB_ACTIONS = 3;
@@ -108,11 +113,10 @@ public class Game {
 	}	
 	
 	public List<Score> run() {
-			
-		if (GAME_MESSAGES) 
-			System.out.println("Starting a new game...");
 		
 		this.initialize();
+		
+		Game.STARTING_COINS = Game.COINS;
 		
 		if (GAME_MESSAGES) 
 			System.out.println("Game begins.");
@@ -125,7 +129,7 @@ public class Game {
 		}
 		
 		countCoins();
-	
+		
 		return printResults();
 	}
 
@@ -342,7 +346,8 @@ public class Game {
 		
 		List<Score> scores = new ArrayList<Score>();
 		
-		System.out.println("********** FINISH **********");
+		
+		System.out.println("***** FINISH (" + --round + " rounds, " + Game.STARTING_COINS + " coins) *****");
 		
 		for (Player player : players) {
 			int points = 0;
