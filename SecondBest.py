@@ -1,7 +1,7 @@
 import sys
 from copy import deepcopy
 from random import randint
-In=str(sys.argv[1])
+In='6;2;52;1_20_3_12;0_-2_0_1;2_12_1_0'#str(sys.argv[1])
 def V(n,f=10,t=14):
  n=str(n);z=0;s='';d='0123456789';d1='N123ABCXYZRTFU'
  for i in n:z=z*f+d.index(i)
@@ -78,7 +78,9 @@ for x in range(len(Pos)):
                 z+=int(self[2])*2
     if P:
         C.append(z);B.append((z,y))
-c=list(set(C))[::-1][1];D=[]
+c=list(set(C))
+c.sort()
+c=c[::-1][1];D=[]
 for x in B:
     if c in x:D.append(x)
 print(D[randint(0,len(D)-1)][1])

@@ -9,34 +9,40 @@ import java.util.Map;
 import players.Balance;
 import players.BirdInTheHand;
 import players.Crook;
+import players.Devil;
 import players.EgoisticalBot;
 import players.Flipper;
 import players.GreedyRotation;
 import players.Jim;
 import players.Oracle;
 import players.PassiveBot;
+import players.RememberMe;
 import players.Saboteur;
 import players.SecondBest;
 import players.SimpleBot;
 import players.TheJanitor;
 import players.TraderBot;
+import players.Wheeler;
 
 public class Game {
 	private static Player[] players = {
 		new Balance(),
 		new BirdInTheHand(),
 		new Crook(),
+		new Devil(),
 		new EgoisticalBot(),
 		new Flipper(),
 		new GreedyRotation(),
 		new Jim(),
 		new Oracle(),
 		new PassiveBot(),
+		new RememberMe(),
 		new Saboteur(),
 		new SecondBest(),
 		new SimpleBot(),
 		new TheJanitor(),
-		new TraderBot()
+		new TraderBot(),
+		new Wheeler()
 	};
 	
 	// Game Parameters

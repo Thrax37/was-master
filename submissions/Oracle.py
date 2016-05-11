@@ -13,9 +13,9 @@ def filter_neighbors(neighbors, me, size):
     limit = size - MOVES_REQUIRED
     for data in neighbors:
         i, _, flipped, unflipped = map(int, data.split('_'))
-        position = (me - i) % size
-        if MOVES_REQUIRED >= position or position >= limit:
-            yield i, [flipped, unflipped]
+        if MOVES_REQUIRED < (me - i) % size < limit:
+            continue  # Skip neighbors that are too far away
+        yield i, [flipped, unflipped]
 
 
 class Player:
@@ -122,7 +122,7 @@ setattr(Player, '3', Player.three)
 
 
 def scenarii(player):
-    for tries in itertools.product('N123ABCXYZRTFU', repeat=MOVES_REQUIRED):
+    for tries in itertools.product('FUABCXYZ123NRT', repeat=MOVES_REQUIRED):
         player.reset()
         points = 0
         for try_ in tries:
